@@ -72,11 +72,16 @@ def get_data(config):
         dset = CelebAHQ(**kwargs)
 
     elif dset_type == 'cats':
-      transforms.transforms.insert(0, RandomHorizontalFlip())
-      dset = Cats(**kwargs)
+        transforms.transforms.insert(0, RandomHorizontalFlip())
+        dset = Cats(**kwargs)
   
     elif dset_type == 'cub':
         dset = CUB(**kwargs)
+
+    else:
+        # default version, but may be needed to adjust for more specific data
+        transforms.transforms.insert(0, CenterCrop(imsize))
+        dset = ImageDataset(**kwargs)
 
     dset.H = dset.W = imsize
     dset.focal = W/2 * 1 / np.tan((.5 * fov * np.pi/180.))
