@@ -1,5 +1,5 @@
 mkdir -p anime
 cd anime
-wget https://drive.google.com/file/d/1c_DZLBfaPw0TPjNXA07L3K-hVnyVzUga/view?usp=sharing
+wget /content/drive/MyDrive/anime_faces/archive.zip
 unzip archive.zip
 cd ..
