@@ -1,5 +1,6 @@
 mkdir -p anime
 cd anime
-wget /content/drive/MyDrive/anime_faces/archive.zip
+wget /content/drive/MyDrive/anime/archive.zip
 unzip archive.zip
-cd ..
+cd archive
+cd ../../
