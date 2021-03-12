@@ -1,5 +1,5 @@
 mkdir -p ffhq
 cd ffhq
-wget https://drive.google.com/file/d/1c_DZLBfaPw0TPjNXA07L3K-hVnyVzUga/view?usp=sharing
+wget https://drive.google.com/file/d/1WvlAIvuochQn_L_f9p3OdFdTiSLlnnhv/view?usp=sharing
 unzip archive.zip
 cd ..
