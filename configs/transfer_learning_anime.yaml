@@ -2,7 +2,7 @@ expname: anime
 data:
   datadir: data/anime
   type: anime
-  imsize: 128
+  imsize: 64
   white_bkgd: True
   near: 1.
   far: 6.
@@ -14,8 +14,8 @@ data:
   vmin: 0.                    # 0 deg, convert to degrees via arccos(1 - 2 * v) * 180. / pi
   vmax: 0.67642212862617093    # 85 deg, convert to degrees via arccos(1 - 2 * v) * 180. / pi
 transfer_learning:
-  type: anime
-  imsize: 128
+  type: celebA
+  imsize: 64
   lr_g: 
     pt_linear: [0, 0, 0, 0, 0, 0, 0, 0.0005] # int or list of 8 numbers
     views_linear: 0.0005
