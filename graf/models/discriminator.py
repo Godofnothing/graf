@@ -1,8 +1,6 @@
 import torch
 import torch.nn as nn
 
-from submodules.nerf_pytorch.coord_conv import CoordConv 
-
 class Discriminator(nn.Module):
     def __init__(self, nc=3, ndf=64, imsize=64, hflip=False):
         super(Discriminator, self).__init__()
@@ -18,14 +16,14 @@ class Discriminator(nn.Module):
         if self.imsize==128:
             blocks += [
                 # input is (nc) x 128 x 128
-                SN(CoordConv(in_channels=nc, out_channels=ndf//2, kernel_size=4, stride=2, padding=1, bias=False)),
+                SN(nn.Conv2d(in_channels=nc, out_channels=ndf//2, kernel_size=4, stride=2, padding=1, bias=False)),
                 nn.LeakyReLU(0.2, inplace=True),
                 # input is (ndf//2) x 64 x 64
-                SN(CoordConv(in_channels=ndf//2, out_channels=ndf, kernel_size=4, stride=2, padding=1, bias=False)),
+                SN(nn.Conv2d(in_channels=ndf//2, out_channels=ndf, kernel_size=4, stride=2, padding=1, bias=False)),
                 IN(ndf),
                 nn.LeakyReLU(0.2, inplace=True),
                 # state size. (ndf) x 32 x 32
-                SN(CoordConv(in_channels=ndf, out_channels=ndf * 2, kernel_size=4, stride=2, padding=1, bias=False)),
+                SN(nn.Conv2d(in_channels=ndf, out_channels=ndf * 2, kernel_size=4, stride=2, padding=1, bias=False)),
                 #nn.BatchNorm2d(ndf * 2),
                 IN(ndf * 2),
                 nn.LeakyReLU(0.2, inplace=True),
@@ -33,10 +31,10 @@ class Discriminator(nn.Module):
         elif self.imsize==64:
             blocks += [
                 # input is (nc) x 64 x 64
-                SN(CoordConv(in_channels=nc, out_channels=ndf, kernel_size=4, stride=2, padding=1, bias=False)),
+                SN(nn.Conv2d(in_channels=nc, out_channels=ndf, kernel_size=4, stride=2, padding=1, bias=False)),
                 nn.LeakyReLU(0.2, inplace=True),
                 # state size. (ndf) x 32 x 32
-                SN(CoordConv(in_channels=ndf, out_channels=ndf * 2, kernel_size=4, stride=2, padding=1, bias=False)),
+                SN(nn.Conv2d(in_channels=ndf, out_channels=ndf * 2, kernel_size=4, stride=2, padding=1, bias=False)),
                 #nn.BatchNorm2d(ndf * 2),
                 IN(ndf * 2),
                 nn.LeakyReLU(0.2, inplace=True),
@@ -44,7 +42,7 @@ class Discriminator(nn.Module):
         else:
             blocks += [
                 # input is (nc) x 32 x 32
-                SN(CoordConv(in_channels=nc, out_channels=ndf * 2, kernel_size=4, stride=2, padding=1, bias=False)),
+                SN(nn.Conv2d(in_channels=nc, out_channels=ndf * 2, kernel_size=4, stride=2, padding=1, bias=False)),
                 #nn.BatchNorm2d(ndf * 2),
                 IN(ndf * 2),
                 nn.LeakyReLU(0.2, inplace=True),
@@ -52,17 +50,17 @@ class Discriminator(nn.Module):
 
         blocks += [
             # state size. (ndf*2) x 16 x 16
-            SN(CoordConv(in_channels=ndf * 2, out_channels=ndf * 4, kernel_size=4, stride=2, padding=1, bias=False)),
+            SN(nn.Conv2d(in_channels=ndf * 2, out_channels=ndf * 4, kernel_size=4, stride=2, padding=1, bias=False)),
             #nn.BatchNorm2d(ndf * 4),
             IN(ndf * 4),
             nn.LeakyReLU(0.2, inplace=True),
             # state size. (ndf*4) x 8 x 8
-            SN(CoordConv(in_channels=ndf * 4, out_channels=ndf * 8, kernel_size=4, stride=2, padding=1, bias=False)),
+            SN(nn.Conv2d(in_channels=ndf * 4, out_channels=ndf * 8, kernel_size=4, stride=2, padding=1, bias=False)),
             #nn.BatchNorm2d(ndf * 8),
             IN(ndf * 8),
             nn.LeakyReLU(0.2, inplace=True),
             # state size. (ndf*8) x 4 x 4
-            SN(CoordConv(in_channels=ndf * 8, out_channels=1, kernel_size=4, stride=1, padding=0, bias=False)),
+            SN(nn.Conv2d(in_channels=ndf * 8, out_channels=1, kernel_size=4, stride=1, padding=0, bias=False)),
             # nn.Sigmoid()
         ]
         blocks = [x for x in blocks if x]

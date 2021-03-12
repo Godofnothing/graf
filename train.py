@@ -34,6 +34,7 @@ if __name__ == '__main__':
         description='Train a GAN with different regularization strategies.'
     )
     parser.add_argument('config', type=str, help='Path to config file.')
+    parser.add_argument('--pretrained', action='store_true', help='Load pretrained model.')
 
     args, unknown = parser.parse_known_args() 
     config = load_config(args.config, 'configs/default.yaml')
@@ -57,6 +58,11 @@ if __name__ == '__main__':
         os.makedirs(out_dir)
     if not path.exists(checkpoint_dir):
         os.makedirs(checkpoint_dir)
+
+    #Use for transfer learning
+    if args.pretrained:
+        config['expname'] = '%s_%s' % (config['data']['type'], config['data']['imsize'])
+        out_dir = os.path.join(config['training']['outdir'], config['expname'] + '_from_pretrained')
 
     # Save config file
     save_config(os.path.join(out_dir, 'config.yaml'), config)
@@ -115,9 +121,15 @@ if __name__ == '__main__':
         **generator.module_dict     # treat NeRF specially
     )
     
-    # Get model file
-    model_file = config['training']['model_file']
+    # setup stats file
     stats_file = 'stats.p'
+
+    # Get model file
+    if args.pretrained:
+        config_pretrained = load_config('configs/pretrained_models.yaml', 'configs/pretrained_models.yaml')
+        model_file = config_pretrained[config['data']['type']][config['data']['imsize']]
+    else:
+        model_file = config['training']['model_file']
 
     # Logger
     logger = Logger(
