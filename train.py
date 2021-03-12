@@ -24,7 +24,7 @@ from GAN_stability.gan_training.logger import Logger
 from GAN_stability.gan_training.checkpoints import CheckpointIO
 from GAN_stability.gan_training.distributions import get_ydist, get_zdist
 from GAN_stability.gan_training.config import (
-    load_config, build_optimizers,
+    load_config, build_optimizers, rebuild_optimizers
 )
 
 
@@ -58,11 +58,6 @@ if __name__ == '__main__':
         os.makedirs(out_dir)
     if not path.exists(checkpoint_dir):
         os.makedirs(checkpoint_dir)
-
-    #Use for transfer learning
-    if args.pretrained:
-        config['expname'] = '%s_%s' % (config['data']['type'], config['data']['imsize'])
-        out_dir = os.path.join(config['training']['outdir'], config['expname'] + '_from_pretrained')
 
     # Save config file
     save_config(os.path.join(out_dir, 'config.yaml'), config)
@@ -126,8 +121,11 @@ if __name__ == '__main__':
 
     # Get model file
     if args.pretrained:
+        assert config['data']['imsize'] == config['transfer_learning']['imsize'], \
+            "Size of images for the pretrained model and the in the dataset used have to be equal"
+
         config_pretrained = load_config('configs/pretrained_models.yaml', 'configs/pretrained_models.yaml')
-        model_file = config_pretrained[config['data']['type']][config['data']['imsize']]
+        model_file = config_pretrained[config['transfer_learning']['type']][config['transfer_learning']['imsize']]
     else:
         model_file = config['training']['model_file']
 
@@ -207,14 +205,20 @@ if __name__ == '__main__':
       and config['training']['model_average_reinit']):
         update_average(generator_test, generator, 0.)
 
-    # Learning rate anneling
-    d_lr = d_optimizer.param_groups[0]['lr']
-    g_lr = g_optimizer.param_groups[0]['lr']
-    g_scheduler = build_lr_scheduler(g_optimizer, config, last_epoch=it)
-    d_scheduler = build_lr_scheduler(d_optimizer, config, last_epoch=it)
-    # ensure lr is not decreased again
-    d_optimizer.param_groups[0]['lr'] = d_lr
-    g_optimizer.param_groups[0]['lr'] = g_lr
+    if args.pretrained:
+      # rearrange learning rate in case of transfer learning
+      g_optimizer, d_optimizer = rebuild_optimizers(generator, discriminator, config)
+      g_scheduler = None
+      d_scheduler = None
+    else:
+      # Learning rate anneling
+      d_lr = d_optimizer.param_groups[0]['lr']
+      g_lr = g_optimizer.param_groups[0]['lr']
+      g_scheduler = build_lr_scheduler(g_optimizer, config, last_epoch=it)
+      d_scheduler = build_lr_scheduler(d_optimizer, config, last_epoch=it)
+      # ensure lr is not decreased again
+      d_optimizer.param_groups[0]['lr'] = d_lr
+      g_optimizer.param_groups[0]['lr'] = g_lr
 
     # Trainer
     trainer = Trainer(
@@ -260,8 +264,10 @@ if __name__ == '__main__':
                                beta=config['training']['model_average_beta'])
 
             # Update learning rate
-            g_scheduler.step()
-            d_scheduler.step()
+            if g_scheduler:
+              g_scheduler.step()
+            if d_scheduler:
+              d_scheduler.step()
 
             d_lr = d_optimizer.param_groups[0]['lr']
             g_lr = g_optimizer.param_groups[0]['lr']
@@ -328,3 +334,4 @@ if __name__ == '__main__':
 
                 if (restart_every > 0 and t0 - tstart > restart_every):
                     exit(3)
+

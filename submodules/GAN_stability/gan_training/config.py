@@ -113,6 +113,101 @@ def build_optimizers(generator, discriminator, config):
 
     return g_optimizer, d_optimizer
 
+def rebuild_optimizers(generator, discriminator, config):
+    optimizer = config['transfer_learning']['optimizer']
+    lr_g = config['transfer_learning']['lr_g']
+    lr_d = config['transfer_learning']['lr_d']
+
+    nerf_num_layers = config['nerf']['netdepth']
+
+    # setup generator for optimization
+    if isinstance(lr_g, dict): 
+        # check that list of the lr is the same as number of convolutions
+        assert nerf_num_layers == len(lr_g['pt_linear'])
+
+        # turn off gradient in all layers, where lr == 0
+        for i, param in enumerate(generator.parameters()):
+            # first 2 * nerf_num_layers are the pairs (weight, bias) 
+            if i < 2 * nerf_num_layers:
+                if lr_g['pt_linear'][i // 2] == 0:
+                     param.requires_grad = False
+            # then follow linear outputs
+            elif i < 2 * (nerf_num_layers + 1):
+                if lr_g['views_linear'] == 0:
+                     param.requires_grad = False
+            elif i < 2 * (nerf_num_layers + 2):
+                if lr_g['feature_linear'] == 0:
+                     param.requires_grad = False
+            elif i < 2 * (nerf_num_layers + 3):
+                if lr_g['alpha_linear'] == 0:
+                     param.requires_grad = False
+            else:
+                if lr_g['rgb_linear'] == 0:
+                     param.requires_grad = False
+        
+        g_params = []
+
+        for i, param in enumerate(generator.parameters()):
+            if i < 2 * nerf_num_layers:
+                if lr_g['pt_linear'][i // 2] > 0:
+                     g_params.append({"params" : param, "lr" : lr_g['pt_linear'][i // 2]})
+            elif i < 2 * (nerf_num_layers + 1):
+                if lr_g['views_linear'] > 0:
+                     g_params.append({"params" : param, "lr" : lr_g['views_linear']})
+            elif i < 2 * (nerf_num_layers + 2):
+                if lr_g['feature_linear'] > 0:
+                     g_params.append({"params" : param, "lr" : lr_g['feature_linear']})
+            elif i < 2 * (nerf_num_layers + 3):
+                if lr_g['alpha_linear'] > 0:
+                     g_params.append({"params" : param, "lr" : lr_g['alpha_linear']})
+            else:
+                if lr_g['rgb_linear'] > 0:
+                     g_params.append({"params" : param, "lr" : lr_g['rgb_linear']})
+
+        # setup defauly_learning_rate to be 0
+        lr_g = 0.0 
+
+    elif isinstance(lr_g, (float, int)):
+        g_params = generator.parameters()
+    else:
+        raise RuntimeError("Unsupported format of learning rate")
+
+    # setup discriminator for optimization
+    if isinstance(lr_d, list): 
+        # check that list of the lr is the same as number of convolutions
+        assert len(list(discriminator.parameters())) == len(lr_d)
+
+        # turn off gradient in all layers, where lr == 0
+        for lr, param in zip(lr_d, discriminator.parameters()):
+            if lr == 0:
+                param.requires_grad = False
+
+        d_params = [
+            { "params" : param, "lr" : lr} 
+            for lr, param in zip(lr_d, discriminator.parameters()) if lr > 0
+        ]
+
+        # setup defauly_learning_rate to be 0
+        lr_d = 0.0 
+
+    elif isinstance(lr_d, (float, int)):
+        d_params = discriminator.parameters()
+    else:
+        raise RuntimeError("Unsupported format of learning rate")
+
+    # Optimizers
+    if optimizer == 'rmsprop':
+        g_optimizer = optim.RMSprop(g_params, lr=lr_g, alpha=0.99, eps=1e-8)
+        d_optimizer = optim.RMSprop(d_params, lr=lr_d, alpha=0.99, eps=1e-8)
+    elif optimizer == 'adam':
+        g_optimizer = optim.Adam(g_params, lr=lr_g, betas=(0., 0.99), eps=1e-8)
+        d_optimizer = optim.Adam(d_params, lr=lr_d, betas=(0., 0.99), eps=1e-8)
+    elif optimizer == 'sgd':
+        g_optimizer = optim.SGD(g_params, lr=lr_g, momentum=0.)
+        d_optimizer = optim.SGD(d_params, lr=lr_d, momentum=0.)
+
+    return g_optimizer, d_optimizer  
+
 
 def build_lr_scheduler(optimizer, config, last_epoch=-1):
     lr_scheduler = optim.lr_scheduler.StepLR(

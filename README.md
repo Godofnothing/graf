@@ -182,3 +182,15 @@ If you suffer from lack of memory set batch size as small as possible - like 1 i
 
 there is a demo `pi_graf_demo.ipynb` in order to get started
 
+## Transfer learning
+
+## I would like to start from pretrained model - what to do? 
+
+1) Set-up the config file, look at the examplle `configs/transfer_learning_carla.yaml`. Things to note:
+- Learning rate of generator can be a `float` or `dict` (where keys are the names of modules)
+- Learning rate of discrimator can be a `float` or `list` 
+- In both cases check, that the length of learning rate list matches the number of layers
+- Image sizes of the dataset, on which the generator is trained, and from which we transfer the weights *have to be equal*
+
+2) When running the `python train.py` add flag `--pretrained` in order to run the model with pretrained weights
+
