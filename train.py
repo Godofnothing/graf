@@ -211,8 +211,8 @@ if __name__ == '__main__':
     if args.pretrained:
       # rearrange learning rate in case of transfer learning
       g_optimizer, d_optimizer = rebuild_optimizers(generator, discriminator, config)
-      g_scheduler = None
-      d_scheduler = None
+      g_scheduler = build_lr_scheduler(g_optimizer, config, last_epoch=it)
+      d_scheduler = build_lr_scheduler(d_optimizer, config, last_epoch=it)
     else:
       # Learning rate anneling
       d_lr = d_optimizer.param_groups[0]['lr']
