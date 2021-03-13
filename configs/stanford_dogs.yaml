@@ -1,6 +1,6 @@
 expname: stanford_dogs
 data:
-  datadir: data/{path_to_dogs}
+  datadir: data/dogs
   type: stanford_dogs
   imsize: 64
   white_bkgd: True
