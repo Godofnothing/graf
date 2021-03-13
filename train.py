@@ -125,9 +125,9 @@ if __name__ == '__main__':
             "Size of images for the pretrained model and the in the dataset used have to be equal"
 
         config_pretrained = load_config('configs/pretrained_models.yaml', 'configs/pretrained_models.yaml')
-        model_file = config_pretrained[config['transfer_learning']['type']][config['transfer_learning']['imsize']]
-    else:
-        model_file = config['training']['model_file']
+        pretrained_model_file = config_pretrained[config['transfer_learning']['type']][config['transfer_learning']['imsize']]
+    
+    model_file = config['training']['model_file']
 
     # Logger
     logger = Logger(
@@ -188,7 +188,10 @@ if __name__ == '__main__':
 
     # Load checkpoint if it exists
     try:
-        load_dict = checkpoint_io.load(model_file)
+        if args.pretrained:
+            load_dict = checkpoint_io.load(pretrained_model_file)
+        else:
+            load_dict = checkpoint_io.load(model_file)
     except FileNotFoundError:
         it = epoch_idx = -1
         fid_best = float('inf')
