@@ -4,15 +4,15 @@ data:
   type: ffhq
   imsize: 64
   white_bkgd: True
-  near: 7.5
-  far: 12.5
-  radius: 9.5,10.5                 # set according to near and far plane
-  fov: 10.
+  near: 1.
+  far: 6.
+  radius: 3.4                 # set according to near and far plane
+  fov: 90.
   orthographic: False
   umin: 0.                    # 0 deg, convert to degree via 360. * u
-  umax: 0.25                    # 360 deg, convert to degree via 360. * u
-  vmin: 0.32898992833716556     # 70 deg, convert to degrees via arccos(1 - 2 * v) * 180. / pi
-  vmax: 0.45642212862617093     # 85 deg, convert to degrees via arccos(1 - 2 * v) * 180. / pi
+  umax: 1.                    # 360 deg, convert to degree via 360. * u
+  vmin: 0.                    # 0 deg, convert to degrees via arccos(1 - 2 * v) * 180. / pi
+  vmax: 0.45642212862617093 
 transfer_learning:
   type: celebA
   imsize: 64
