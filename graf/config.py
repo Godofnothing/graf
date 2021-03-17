@@ -45,7 +45,7 @@ def get_data(config):
     fov = config['data']['fov']
 
     transforms = Compose([
-        Resize((imsize, imsize)),
+        Resize(imsize),
         ToTensor(),
         Lambda(lambda x: x * 2 - 1),
     ])
@@ -78,8 +78,15 @@ def get_data(config):
     elif dset_type == 'cub':
         dset = CUB(**kwargs)
 
+    elif dset_type == 'dogs':
+        # default version, but may be needed to adjust for more specific data
+        transforms.transforms.insert(0, CenterCrop(imsize))
+        transforms.transforms.insert(0, RandomHorizontalFlip())
+        dset = ImageDataset(**kwargs)
+
     else:
         # default version, but may be needed to adjust for more specific data
+        transforms.transforms.insert(0, Resize((imsize, imsize)))
         dset = ImageDataset(**kwargs)
 
     dset.H = dset.W = imsize
