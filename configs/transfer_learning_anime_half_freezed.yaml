@@ -22,7 +22,7 @@ transfer_learning:
     feature_linear: 0.0005
     alpha_linear: 0.0005
     rgb_linear: 0.0005
-  lr_d: [0, 0, 0, 0.0001]
+  lr_d: [0, 0, 0.0001, 0.0001]
   optimizer: rmsprop
 nerf:
   i_embed: 0
@@ -74,7 +74,7 @@ training:
   model_average_reinit: false
   restart_every: -1
   save_best: fid
-  fid_every: 5000             # Valid for FID and KID
+  fid_every: 2500             # Valid for FID and KID
   print_every: 10
   sample_every: 500
   save_every: 900
