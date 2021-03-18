@@ -79,7 +79,8 @@ def get_data(config):
         dset = CUB(**kwargs)
         
     elif dset_type == 'dogs':
-    	transforms.transforms.insert(0, RandomResizedCrop(imsize, scale=(0.3, 1.0)))
+    	transforms.transforms[0] = Resize(imsize)
+    	transforms.transforms.insert(1, CenterCrop(imsize))
     	dset = ImageDataset(**kwargs)
         
     else:
