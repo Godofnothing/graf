@@ -2,7 +2,7 @@ expname: ffhq
 data:
   datadir: data/ffhq
   type: ffhq
-  imsize: 64
+  imsize: 128
   white_bkgd: False
   radius: 9.5,10.5
   near: 7.5
@@ -15,7 +15,7 @@ data:
   
 transfer_learning:
   type: celebA
-  imsize: 64
+  imsize: 128
   lr_g: 
     pt_linear: [0, 0, 0, 0, 0, 0, 0, 0.0005] # int or list of 8 numbers
     views_linear: 0.0005
