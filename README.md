@@ -89,17 +89,6 @@ cd ..
 to preprocess the data and save it to `data/cats`.
 If successful this script should print: `Preprocessed 9407 images.`
 
-### Birds
-Download [CUB-200-2011](http://www.vision.caltech.edu/visipedia/CUB-200-2011.html) and the corresponding [Segmentation Masks](https://drive.google.com/file/d/1EamOKGLoTuZdtcVYbHMWNpkn3iAVj8TP/view).
-Run
-```
-cd data
-python preprocess_cub.py PATH/TO/CUB-200-2011 PATH/TO/SEGMENTATION/MASKS
-cd ..
-```
-to preprocess the data and save it to `data/cub`.
-If successful this script should print: `Preprocessed 8444 images.`
-
 ## Usage
 
 When you have installed all dependencies, you are ready to run our pre-trained models for 3D-aware image synthesis.
