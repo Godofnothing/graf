@@ -1,4 +1,4 @@
-# <center>[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/12UIn1uqIwWRqsIGNCeir35NA7GhMcWkI#scrollTo=-dVD85DCX1Ua)</center>
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/Godofnothing/graf/blob/main/notebooks/ffhq_freezed_but_last_128.ipynb)
 
 # GRAF
 
