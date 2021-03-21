@@ -1,7 +1,7 @@
 # GRAF
 
 <div style="text-align: center">
-<img src="animations/apples_anime_ffhq_dogs.gif" width="512"/><br>
+<img src="animations/apples_anime_ffhq_dogs.gif" width="1024"/><br>
 </div>
 
 This repository contains the mixture of the official code for the paper
