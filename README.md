@@ -1,5 +1,6 @@
-[![<center>Open In Colab</center>](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/12UIn1uqIwWRqsIGNCeir35NA7GhMcWkI#scrollTo=-dVD85DCX1Ua)
-
+<div style="text-align: center">
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/12UIn1uqIwWRqsIGNCeir35NA7GhMcWkI#scrollTo=-dVD85DCX1Ua)
+</div>
 # GRAF
 
 <div style="text-align: center">
