@@ -1,6 +1,5 @@
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Godofnothing/graf/blob/main/main.ipynb)
-
-
+### (_**Note: [This is the project with high GPU demand]**_)
 
 # GRAF
 
