@@ -79,4 +79,4 @@ training:
   sample_every: 500
   save_every: 900
   backup_every: 50000
-  video_every: 10000
+  video_every: 7000
