@@ -61,6 +61,7 @@ cd ../../../
 - [CelebFaces Attributes Dataset (CelebA)](https://www.kaggle.com/jessicali9530/celeba-dataset)
 - [Carla Dataset](https://s3.eu-central-1.amazonaws.com/avg-projects/graf/data/carla.zip)
 - [Cat Dataset](https://www.kaggle.com/crawford/cat-dataset)
+
 **The target** models were trained on the next datasets: 
 - [Flickr-Faces-HQ Dataset (FFHQ)](https://www.kaggle.com/arnaud58/flickrfaceshq-dataset-ffhq)
 - [Anime Face Dataset](https://www.kaggle.com/splcher/animefacedataset)
@@ -68,10 +69,13 @@ cd ../../../
 - [Stanford Dogs Dataset](https://www.kaggle.com/jessicali9530/stanford-dogs-dataset)
 
 The target models were trained using  base models in the next way:
+
 1) CelebA 🠒 FFHQ
 2) CelebA 🠒 Anime 
 3) Cats 🠒 Dogs 
 4) Carla 🠒 Fruits 
+
+**Note**: **base dataset** 🠒 **target dataset**.
 
 Due to computational restrictions, we've used the next sizes of the target datasets:
 - FFHQ: 10 000 images;
@@ -83,7 +87,7 @@ Due to computational restrictions, we've used the next sizes of the target datas
 
 In this kind of dataset, we considered some manual settings to choose the best samples with the lowest level of the background.
 
-### Fruits360
+### Fruits 360
 
 In the case of this kind of dataset, we've considered manual settings to avoid bad results on different types of fruits (It is possible, but it cost a lot of computational capacity). We've managed with all kinds of apples.
 
@@ -97,6 +101,8 @@ where you replace `CONFIG.yaml` with your config file.
 The easiest way is to use one of the existing config files in the `./configs` directory 
 which correspond to the experiments presented in the paper. 
 Note that this will train the model from scratch and will not resume training for a pretrained model.
+
+**Note:** to train a model from scratch, you should consider a new `CONFIG.yaml` file based on `default.yaml`!
 
 ## Evaluation of a new model
 
