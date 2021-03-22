@@ -1,4 +1,4 @@
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg){:target="_blank"}](https://colab.research.google.com/github/Godofnothing/graf/blob/main/main.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Godofnothing/graf/blob/main/main.ipynb)
 
 ### **The project with high GPU demand**
 
