@@ -1,7 +1,7 @@
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Godofnothing/graf/blob/main/main.ipynb)
 ### **The project with high GPU demand**
 
-# GRAF
+# GRAF reimplemetation
 
 <div style="text-align: center">
 <img src="animations/apples_anime_ffhq_dogs.gif" width="1024"/><br>
@@ -56,8 +56,7 @@ cd ../../../
 
 ## Datasets
 
-**The pre-trained** models were trained on **CelebFaces Attributes Dataset (CelebA)
-**, **Carla Dataset**, and **Cat Dataset** datasets:
+**The pre-trained** models were trained on **CelebFaces Attributes Dataset(CelebA)**, **Carla Dataset**, and **Cat Dataset** datasets:
 - [CelebFaces Attributes Dataset (CelebA)](https://www.kaggle.com/jessicali9530/celeba-dataset)
 - [Carla Dataset](https://s3.eu-central-1.amazonaws.com/avg-projects/graf/data/carla.zip)
 - [Cat Dataset](https://www.kaggle.com/crawford/cat-dataset)
@@ -75,7 +74,7 @@ The target models were trained using  base models in the next way:
 3) Cats 🠒 Dogs 
 4) Carla 🠒 Fruits 
 
-**Note**: **base dataset** 🠒 **target dataset**.
+**Note**: _base dataset_ 🠒 _target dataset_.
 
 Due to computational restrictions, we've used the next sizes of the target datasets:
 - FFHQ: 10 000 images;
