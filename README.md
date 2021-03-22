@@ -1,5 +1,5 @@
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Godofnothing/graf/blob/main/main.ipynb)
-### (_**Note: [This is the project with high GPU demand]**_)
+### **The project with high GPU demand**
 
 # GRAF
 
@@ -7,21 +7,32 @@
 <img src="animations/apples_anime_ffhq_dogs.gif" width="1024"/><br>
 </div>
 
-This repository contains the mixture of the official code for the paper
-[GRAF: Generative Radiance Fields for 3D-Aware Image Synthesis](https://avg.is.tuebingen.mpg.de/publications/schwarz2020neurips)
-with ideas from [pi-GAN: Periodic Implicit Generative Adversarial Networks for 3D-AwareImage Synthesis](https://arxiv.org/abs/2012.00926)
+This repository contains the reimplemetation of the official code for the paper
+[GRAF: Generative Radiance Fields for 3D-Aware Image Synthesis](https://avg.is.tuebingen.mpg.de/publications/schwarz2020neurips).
 
-You can find detailed usage instructions for training your own models and using pre-trained models below.
+You can find detailed usage instructions for using pre-trained models and training your own models below.
 
+## Usage
 
-If you find our code or paper useful, please consider citing
+1) Click on the button `Open in Colab` or go to the `main.ipynb` and have a look on the notebook;
+2) Follow the instructions: choose one of the datasets and choose one of the options of the transfer learning;
+3) Run All cells;
+4) Choose `.json` file for kaggle;
+5) After `~15-20 minutes`the folder `results/NAME_OF_CURRENT_FOLDER` should be created, where you can find generated images and videos varying camera pose chosen datasets;
+6) After you've decided to stop, the iterations go to the next cell and save your results locally;
+7) Download the `stats.py`; 
+8) Open `plot_stats.ipynb` to plot the results on `FID` and `KID`.
 
-    @inproceedings{Schwarz2020NEURIPS,
-      title = {GRAF: Generative Radiance Fields for 3D-Aware Image Synthesis},
-      author = {Schwarz, Katja and Liao, Yiyi and Niemeyer, Michael and Geiger, Andreas},
-      booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
-      year = {2020}
-    }
+## Transfer learning on your own dataset
+
+1) Set-up the config file, look at the examplle `configs/transfer_learning_ffhq_freezed_but_last.yaml`. Then consider next things:
+- Learning rate of the generator can be a `float` or `dict` (where keys are the names of modules);
+- Learning rate of the discriminator can be a `float` or `list`; 
+- In both cases check, that the length of learning rate list matches the number of layers;
+- Image sizes of the dataset, on which the generator is trained, and from which we transfer the weights *have to be equal*;
+- Don't forget to set the names of the initial dataset and the target dataset in config file.
+2) When running the `python train.py` add a flag `--pretrained` in order to run the model with pretrained weights.
+3) Note: while running in `Colab` you should run the main code within one cell. 
 
 ## Installation
 First you have to make sure that you have all dependencies in place.
@@ -43,80 +54,40 @@ pip install .
 cd ../../../
 ```
 
-## Demo
-
-You can now test our code via:
-```
-python eval.py configs/carla.yaml --pretrained --rotation_elevation
-```
-This script should create a folder `results/carla_128_from_pretrained/eval/` where you can find generated videos varying camera pose for the Cars dataset.
-
 ## Datasets
 
-If you only want to generate images using our pretrained models you do not need to download the datasets.
-The datasets are only needed if you want to train a model from scratch.
+**The pre-trained** models were trained on **CelebFaces Attributes Dataset (CelebA)
+**, **Carla Dataset**, and **Cat Dataset** datasets:
+- [CelebFaces Attributes Dataset (CelebA)](https://www.kaggle.com/jessicali9530/celeba-dataset)
+- [Carla Dataset](https://s3.eu-central-1.amazonaws.com/avg-projects/graf/data/carla.zip)
+- [Cat Dataset](https://www.kaggle.com/crawford/cat-dataset)
+**The target** models were trained on the next datasets: 
+- [Flickr-Faces-HQ Dataset (FFHQ)](https://www.kaggle.com/arnaud58/flickrfaceshq-dataset-ffhq)
+- [Anime Face Dataset](https://www.kaggle.com/splcher/animefacedataset)
+- [Fruits 360](https://www.kaggle.com/moltean/fruits)
+- [Stanford Dogs Dataset](https://www.kaggle.com/jessicali9530/stanford-dogs-dataset)
 
-### Cars
+The target models were trained using  base models in the next way:
+1) CelebA 🠒 FFHQ
+2) CelebA 🠒 Anime 
+3) Cats 🠒 Dogs 
+4) Carla 🠒 Fruits 
 
-To download the Cars dataset from the paper simply run
-```
-cd data
-./download_carla.sh
-cd ..
-```
-This creates a folder `data/carla/` downloads the images as a zip file and extracts them to `data/carla/`. 
-While we do <em>not</em> use camera poses in this project we provide them for completeness. Your can download them by running
-```
-cd data
-./download_carla_poses.sh
-cd ..
-```
-This downloads the camera intrinsics (single file, equal for all images) and extrinsics corresponding to each image.  
+Due to computational restrictions, we've used the next sizes of the target datasets:
+- FFHQ: 10 000 images;
+- Anime Face: 63 632 images (full dataset);
+- Stanford Dogs: 3 562;
+- Fruits: 6 467;
 
-### Faces
+### Stanford dogs
 
-Download [celebA](http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html).
-Then replace `data/celebA` in `configs/celebA.yaml` with `*PATH/TO/CELEBA*/Img/img_align_celebA`.
+In this kind of dataset, we considered some manual settings to choose the best samples with the lowest level of the background.
 
-Download [celebA_hq](https://github.com/tkarras/progressive_growing_of_gans).
-Then replace `data/celebA_hq` in `configs/celebAHQ.yaml` with `*PATH/TO/CELEBA_HQ*`.
+### Fruits360
 
-### Cats
-Download the [CatDataset](https://www.kaggle.com/crawford/cat-dataset).
-Run
-```
-cd data
-python preprocess_cats.py PATH/TO/CATS/DATASET
-cd ..
-```
-to preprocess the data and save it to `data/cats`.
-If successful this script should print: `Preprocessed 9407 images.`
+In the case of this kind of dataset, we've considered manual settings to avoid bad results on different types of fruits (It is possible, but it cost a lot of computational capacity). We've managed with all kinds of apples.
 
-## Usage
-
-When you have installed all dependencies, you are ready to run our pre-trained models for 3D-aware image synthesis.
-
-### Generate images using a pretrained model
-
-To evaluate a pretrained model, run 
-```
-python eval.py CONFIG.yaml --pretrained --fid_kid --rotation_elevation --shape_appearance
-```
-where you replace CONFIG.yaml with one of the config files in `./configs`. 
-
-This script should create a folder `results/EXPNAME/eval` with FID and KID scores in `fid_kid.csv`, videos for rotation and elevation in the respective folders and an interpolation for shape and appearance, `shape_appearance.png`. 
-
-Note that some pretrained models are available for different image sizes which you can choose by setting `data:imsize` in the config file to one of the following values:
-```
-configs/carla.yaml: 
-    data:imsize 64 or 128 or 256 or 512
-configs/celebA.yaml:
-    data:imsize 64 or 128
-configs/celebAHQ.yaml:
-    data:imsize 256 or 512
-```
-
-### Train a model from scratch
+## Train a model from scratch
 
 To train a 3D-aware generative model from scratch run
 ```
@@ -127,16 +98,7 @@ The easiest way is to use one of the existing config files in the `./configs` di
 which correspond to the experiments presented in the paper. 
 Note that this will train the model from scratch and will not resume training for a pretrained model.
 
-You can monitor on <http://localhost:6006> the training process using [tensorboard](https://www.tensorflow.org/guide/summaries_and_tensorboard):
-```
-cd OUTPUT_DIR
-tensorboard --logdir ./monitoring --port 6006
-```
-where you replace `OUTPUT_DIR` with the respective output directory.
-
-For available training options, please take a look at `configs/default.yaml`.
-
-### Evaluation of a new model
+## Evaluation of a new model
 
 For evaluation of the models run
 ```
@@ -144,45 +106,18 @@ python eval.py CONFIG.yaml --fid_kid --rotation_elevation --shape_appearance
 ```
 where you replace `CONFIG.yaml` with your config file.
 
-## Multi-View Consistency Check
-
-You can evaluate the multi-view consistency of the generated images by running a Multi-View-Stereo (MVS) algorithm on the generated images. This evaluation uses [COLMAP](https://colmap.github.io/) and make sure that you have COLMAP installed to run
-```
-python eval.py CONFIG.yaml --reconstruction
-```
-where you replace `CONFIG.yaml` with your config file. You can also evaluate our pretrained models via:
-```
-python eval.py configs/carla.yaml --pretrained --reconstruction
-```
-This script should create a folder `results/EXPNAME/eval/reconstruction/` where you can find generated multi-view images in `images/` and the corresponding 3D reconstructions in `models/`.
-
 ## Further Information
 
 ### GAN training
 
-This repository uses Lars Mescheder's awesome framework for [GAN training](https://github.com/LMescheder/GAN_stability).
+GRAF repository uses Lars Mescheder's awesome framework for [GAN training](https://github.com/LMescheder/GAN_stability).
 
 ### NeRF
 
-We base our code for the Generator on this great [Pytorch reimplementation](https://github.com/yenchenlin/nerf-pytorch) of Neural Radiance Fields.
+The GRAF repository code is based on the Generator on this great [Pytorch reimplementation](https://github.com/yenchenlin/nerf-pytorch) of Neural Radiance Fields.
 
 ### Some hints
 
 If you suffer from lack of memory set batch size as small as possible - like 1 in `configs/default.yml`.
 
-### Running on `colab`
-
-there is a demo `pi_graf_demo.ipynb` in order to get started
-
-## Transfer learning
-
-## I would like to start from pretrained model - what to do? 
-
-1) Set-up the config file, look at the examplle `configs/transfer_learning_carla.yaml`. Things to note:
-- Learning rate of generator can be a `float` or `dict` (where keys are the names of modules)
-- Learning rate of discrimator can be a `float` or `list` 
-- In both cases check, that the length of learning rate list matches the number of layers
-- Image sizes of the dataset, on which the generator is trained, and from which we transfer the weights *have to be equal*
-
-2) When running the `python train.py` add flag `--pretrained` in order to run the model with pretrained weights
 
