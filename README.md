@@ -1,10 +1,11 @@
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Godofnothing/graf/blob/main/main.ipynb){:target="_blank"}
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg){:target="_blank"}](https://colab.research.google.com/github/Godofnothing/graf/blob/main/main.ipynb)
+
 ### **The project with high GPU demand**
 
 # GRAF reimplemetation
 
 <div style="text-align: center">
-<img src="animations/anime_ffhq_fruits_dogs.gif" width="256"/><br>
+<img src="animations/results.gif" width="256"/><br>
 </div>
 
 This repository contains the reimplemetation of the official code for the paper
