@@ -16,13 +16,14 @@ You can find detailed usage instructions for using pre-trained models and traini
 ## Usage
 
 1) Click on the button `Open in Colab` or go to the `main.ipynb` and have a look on the notebook;
-2) Follow the instructions: choose one of the datasets and choose one of the options of the transfer learning;
-3) Run All cells;
-4) Choose `.json` file for kaggle; [(You may find how to download JSON file here)](https://github.com/Kaggle/kaggle-api#:~:text=To%20use%20the%20Kaggle%20API,file%20containing%20your%20API%20credentials.)
-5) After starting the training process you should wait for `~15-20 minutes` and then the folder `results/NAME_OF_CURRENT_FOLDER` should be created, where you can find generated images and videos varying camera pose chosen datasets;
-6) After you've decided to stop, the iterations go to the next cell and save your results locally;
-7) Download the `stats.py` file from the `result` folder; 
-8) Open `plot_stats.ipynb` to plot the results on `FID` and `KID`.
+2) Set **GPU** as a runtime (**NOTE:** it's very crucial to choose the GPU runtime); 
+3) Follow the instructions: choose one of the datasets and choose one of the options of the transfer learning;
+4) **Run All cells**;
+5) Choose `.json` file for **kaggle**; [(You may find how to download JSON file here)](https://github.com/Kaggle/kaggle-api#:~:text=To%20use%20the%20Kaggle%20API,file%20containing%20your%20API%20credentials.)
+6) After starting the training process you should wait for `~15-20 minutes` and then the folder `results/NAME_OF_CURRENT_FOLDER` should be created, where you can find generated images and videos varying camera pose chosen datasets;
+7) After you've decided to stop, the iterations go to the next cell and save your results locally;
+8) Download the `stats.py` file from the `result` folder; 
+9) Open `plot_stats.ipynb` to plot the results on `FID` and `KID`.
 
 ## Transfer learning on your own dataset
 
@@ -92,10 +93,10 @@ The target models were trained using  base models in the next way:
 **Note**: _base dataset_ 🠒 _target dataset_.
 
 Due to computational restrictions, we've used the next sizes of the target datasets:
-- FFHQ: 10 000 images;
-- Anime Face: 63 632 images (full dataset);
-- Stanford Dogs: 3 562;
-- Fruits: 6 467;
+- FFHQ: 10k images;
+- Anime Face: 63k images (full dataset);
+- Stanford Dogs: 3.5k images;
+- Fruits: 600 images.
 
 ### Stanford dogs
 
