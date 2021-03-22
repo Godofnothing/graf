@@ -4,7 +4,7 @@
 # GRAF reimplemetation
 
 <div style="text-align: center">
-<img src="animations/apples_anime_ffhq_dogs.gif" width="1024"/><br>
+<img src="animations/anime_ffhq_fruits_dogs.gif" width="1024"/><br>
 </div>
 
 This repository contains the reimplemetation of the official code for the paper
