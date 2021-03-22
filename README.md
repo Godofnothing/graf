@@ -5,7 +5,7 @@
 # GRAF reimplemetation
 
 <div style="text-align: center">
-<img src="animations/results.gif" width="256"/><br>
+<img src="animations/results.gif" width="1024"/><br>
 </div>
 
 This repository contains the reimplemetation of the official code for the paper
