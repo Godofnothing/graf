@@ -18,10 +18,10 @@ You can find detailed usage instructions for using pre-trained models and traini
 1) Click on the button `Open in Colab` or go to the `main.ipynb` and have a look on the notebook;
 2) Follow the instructions: choose one of the datasets and choose one of the options of the transfer learning;
 3) Run All cells;
-4) Choose `.json` file for kaggle;
-5) After `~15-20 minutes`the folder `results/NAME_OF_CURRENT_FOLDER` should be created, where you can find generated images and videos varying camera pose chosen datasets;
+4) Choose `.json` file for kaggle; [(You may find how to download JSON file here)](https://github.com/Kaggle/kaggle-api#:~:text=To%20use%20the%20Kaggle%20API,file%20containing%20your%20API%20credentials.)
+5) After starting the training process you should wait for `~15-20 minutes` and then the folder `results/NAME_OF_CURRENT_FOLDER` should be created, where you can find generated images and videos varying camera pose chosen datasets;
 6) After you've decided to stop, the iterations go to the next cell and save your results locally;
-7) Download the `stats.py`; 
+7) Download the `stats.py` file from the `result` folder; 
 8) Open `plot_stats.ipynb` to plot the results on `FID` and `KID`.
 
 ## Transfer learning on your own dataset
@@ -38,6 +38,18 @@ You can find detailed usage instructions for using pre-trained models and traini
 ## Installation
 First you have to make sure that you have all dependencies in place.
 The simplest way to do so, is to use [anaconda](https://www.anaconda.com/). 
+
+**Note:** use this useful code for installing conda in Colab:
+```
+import sys
+# Download miniconda
+!wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+!bash Miniconda3-latest-Linux-x86_64.sh -bfp /usr/local
+# Install packages from Anaconda
+!conda install -y -c conda-forge --prefix /usr/local pymeep
+# Append path to be able to run packages installed with conda
+sys.path.append('/usr/local/lib/python3.7/site-packages')
+```
 
 You can create an anaconda environment called `graf` using
 ```
@@ -61,6 +73,8 @@ cd ../../../
 - [CelebFaces Attributes Dataset (CelebA)](https://www.kaggle.com/jessicali9530/celeba-dataset)
 - [Carla Dataset](https://s3.eu-central-1.amazonaws.com/avg-projects/graf/data/carla.zip)
 - [Cat Dataset](https://www.kaggle.com/crawford/cat-dataset)
+
+We had to decide what type of datasets to use for conducting our experiments. We wanted to choose at least one ideal dataset (**Anime**), two potentially good datasets (**FFHQ** and **Dogs**), similar to the basic ones, and another with highly different types of data (**Fruits**). 
 
 **The target** models were trained on the next datasets: 
 - [Flickr-Faces-HQ Dataset (FFHQ)](https://www.kaggle.com/arnaud58/flickrfaceshq-dataset-ffhq)
@@ -89,9 +103,11 @@ In this kind of dataset, we considered some manual settings to choose the best s
 
 ### Fruits 360
 
-In the case of this kind of dataset, we've considered manual settings to avoid bad results on different types of fruits (It is possible, but it cost a lot of computational capacity). We've managed with all kinds of apples.
+In the case of this kind of dataset, we've considered manual settings to avoid bad results on different types of fruits (It is possible, but it cost a lot of computational capacity). We've decided to have a test with all kinds of apple (and with just one type - in this way we achieved much better results).
 
 ## Train a model from scratch
+
+Based on our experiments (as you may see Anime is the best one), we suggest you use a larger dataset (e.g., at least 30 000 images).
 
 To train a 3D-aware generative model from scratch run
 ```
@@ -113,6 +129,10 @@ python eval.py CONFIG.yaml --fid_kid --rotation_elevation --shape_appearance
 where you replace `CONFIG.yaml` with your config file.
 
 ## Further Information
+
+### GRAF
+
+We're very thankful to the [GRAF repository](https://github.com/autonomousvision/graf).
 
 ### GAN training
 
